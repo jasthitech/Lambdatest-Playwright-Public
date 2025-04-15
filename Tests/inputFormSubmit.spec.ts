@@ -10,11 +10,6 @@ test('Input Form Submit - Validate error and successful submission', async ({ pa
   // Step 3: Click Submit without entering data
   await page.click("(//button[@type='submit'])[2]");
 
-  // Step 4: Assert error validation message is shown
-  // const errorMessage = await page.locator('small:visible').first();
-  // await expect(errorMessage).toBeVisible();
-  // await expect(errorMessage).toHaveText(/please fill/i);
-  //*********************************************************************
       // Step 4: Get the first required input element (like "Name")
       const nameInput = page.locator('input[name="name"]');
 
@@ -26,9 +21,7 @@ test('Input Form Submit - Validate error and successful submission', async ({ pa
 
       // Step 6: Assert the validation message contains expected text
       console.log("Retrived blank for submit error message is: "+ validationMessage);
-      //expect(validationMessage).toMatch(/Please fill out this field./i); // This is browser-dependent wording
       expect(['Please fill out this field.', 'Please fill in this field.']).toContain(validationMessage);
-  //**********************************************************************
 
   // Step 5: Fill all fields
   await page.fill("//input[@placeholder='Name']", 'John Doe');
