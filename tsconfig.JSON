@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "CommonJS",
+      "moduleResolution": "node",
+      "lib": ["ESNext", "DOM"],
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "strict": true,
+      "outDir": "dist",
+      "types": ["node"]
+    },
+    "include": ["tests", "lambda.capabilities.ts"]
+  }  
