@@ -130,4 +130,43 @@ await page.waitForFunction(() => window.appReady === true);
 Assertions auto-wait too:
 await expect(page.locator('.title')).toHaveText('Dashboard');
 ##****************************************************************************************************************
+✅  Handling Dialogs (Alert, Confirm, Prompt)
 
+test('handle alert', async ({ page }) => {
+  page.on('dialog', async dialog => {
+    console.log('Dialog message:', dialog.message());
+    await dialog.accept(); // or dialog.dismiss()
+  });
+
+  await page.click('#trigger-alert');
+});
+
+Tip: Set up the page.on('dialog') before triggering the action that causes it.
+
+📥 Handling Downloads
+
+test('handle file download', async ({ page }) => {
+  const [ download ] = await Promise.all([
+    page.waitForEvent('download'),         // wait for download to start
+    page.click('#download-button')         // triggers download
+  ]);
+
+  const savePath = await download.path();
+  console.log('File saved at:', savePath);
+
+  await download.saveAs('downloads/myFile.pdf');
+});
+Bonus Tip: Use .suggestedFilename() to auto-name it smartly.
+
+📤 Handling File Uploads
+
+test('file upload', async ({ page }) => {
+  await page.goto('https://example.com/upload');
+
+  const fileInput = page.locator('input[type="file"]');
+  await fileInput.setInputFiles('tests/assets/sample-file.txt');
+
+  await page.click('button#submit-upload');
+});
+
+Tip: You can also upload multiple files using setInputFiles([file1, file2]).
