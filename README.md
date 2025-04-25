@@ -23,12 +23,12 @@ This repository contains the solution to the LambdaTest assignment using Playwri
 npx playwright test
 
 ##**********************************************Step-By-Step*********************************************************************************
-**1️⃣ Initialize the Project**
+1️⃣ **Initialize the Project**
 mkdir playwright-ts-tests
 cd playwright-ts-tests
 npm init -y
 
-**2️⃣ Install Playwright with TypeScript Support**
+2️⃣ **Install Playwright with TypeScript Support**
 npm install -D @playwright/test typescript ts-node
 npx playwright install
 
@@ -93,5 +93,41 @@ Note: This opens a GUI for recording steps, which auto-generates code.
 You now have a TypeScript-powered Playwright project ready to scale.
 To add reporting, cross-browser testing, CI integration, or advanced page objects — continue building from this solid base.
 
+##***********************************************Tricky Concepts Examples******************************************************************************
 
+## 🧩 Working with Iframes and Shadow DOM
+
+### 📌 Iframes
+
+To interact with content inside an `<iframe>`, use:
+
+```ts
+const frameHandle = await page.waitForSelector('iframe#login');
+const frame = await frameHandle.contentFrame();
+await frame.click('button'); // interact inside the iframe
+
+🌑 Shadow DOM
+const input = page.locator('my-widget >> shadow=input[name="email"]');
+await input.fill('user@example.com');
+
+## Playwright uses >> shadow= syntax to let you pierce into shadow roots easily.
+##****************************************************************************************************************
+## ⏳ Waits and Synchronization
+
+Playwright auto-waits for elements to become actionable:
+
+```ts
+await page.click('button#start'); // no need to wait manually
+✅ Best Practices
+Use waitForSelector() when you're waiting for dynamic elements:
+
+await page.waitForSelector('.success-toast', { state: 'visible' });
+Avoid waitForTimeout() method unless debugging.
+
+You can wait for custom logic using:
+await page.waitForFunction(() => window.appReady === true);
+
+Assertions auto-wait too:
+await expect(page.locator('.title')).toHaveText('Dashboard');
+##****************************************************************************************************************
 
